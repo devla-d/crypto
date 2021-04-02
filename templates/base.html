@@ -1,0 +1,162 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+
+		<!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <title>Bootstrap 4 Template with Sidebar Menu</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static  'users/assets/css/jquery.mCustomScrollbar.min.css' %}">
+        <link rel="stylesheet" href="{% static  'users/assets/css/animate.css' %}">
+        <link rel="stylesheet" href="{% static  'users/assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static  'users/assets/css/media-queries.css' %}">
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="{% static  'users/assets/ico/favicon.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static  'users/assets/ico/apple-touch-icon-144-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static  'users/assets/ico/apple-touch-icon-114-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static  'users/assets/ico/apple-touch-icon-72-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" href="{% static  'users/assets/ico/apple-touch-icon-57-precomposed.png' %}">
+        <!--script>
+		(function ($) {
+			 /*------------------
+        Preloader
+			--------------------*/
+			$(window).on('load', function () {
+				$(".loader").fadeOut();
+				$("#preloder").delay(200).fadeOut("slow");
+			});
+
+			/*------------------*/
+		})(jQuery);
+		</script-->
+    </head>
+
+    <body id="top">
+<!-- Page Preloder -->
+<div id="preloder">
+	<div class="loader"></div>
+</div>
+        
+
+		<!-- Wrapper -->
+    	<div class="wrapper">
+
+
+			<!-- Sidebar -->
+			<nav class="sidebar" >
+				
+				<!-- close sidebar menu -->
+				<div class="dismiss">
+					<i class="fas fa-arrow-left"></i>
+				</div>
+				
+				<div class="logo">
+					<h3><a href="#">Menu</a></h3>
+				</div>
+				
+				<ul class="list-unstyled menu-elements">
+					<li class="active">
+						<a  href="#top-content"><i class="fas fa-home"></i> Home</a>
+					</li>
+					
+					{% if user.is_authenticated %}
+					<li>
+						<a  href="{% url 'account' %}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+					</li>
+					<li>
+						<a href="#section-2"><i class="fas fa-money-check"></i> Deposite</a>
+					</li>
+					<li>
+						<a  href="#section-6"><i class="fas fa-envelope"></i>Withdraws</a>
+					</li>
+					<li>
+						<a  href="#section-1"><i class="fas fa-exchange-alt"></i> Transaction logs</a>
+					</li>
+					<li>
+						<a href="#section-2"><i class="fas fa-user-plus"></i> Refferals</a>
+					</li>
+					<li>
+						<a  href="#section-6"><i class="fas fa-gift"></i>packages</a>
+					</li>
+					<li>
+						<a  href="#section-6"><i class="fas fa-bell"></i>Notifications</a>
+					</li>
+					<li>
+						<a  href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+					{% else %}
+					<li>
+						<a  href="#section-1"><i class="fas fa-cog"></i> What we do</a>
+					</li>
+					<li>
+						<a href="#section-2"><i class="fas fa-user"></i> About us</a>
+					</li>
+					<li>
+						<a  href="#section-6"><i class="fas fa-envelope"></i> Contact us</a>
+					</li>
+					<li>
+						<a  href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Sing in </a>
+					</li>
+					<li>
+						<a  href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Sign up</a>
+					</li>
+					{% endif %}
+				</ul>
+				
+				<div class="to-top">
+					<a class="btn btn-primary btn-customized-3" href="#top" role="button">
+	                    <i class="fas fa-arrow-up"></i> Top
+	                </a>
+				</div>
+				
+				<div class="dark-light-buttons">
+					<a class="btn btn-primary btn-customized-4 btn-customized-dark" href="#" role="button">Dark</a>
+					<a class="btn btn-primary btn-customized-4 btn-customized-light" href="#" role="button">Light</a>
+				</div>
+			
+			</nav>
+			  </div>
+			<!-- End sidebar -->
+			
+			<!-- Dark overlay -->
+    		<div class="overlay"></div>
+             
+			<!-- Content -->
+			<div class="content">
+			
+				<!-- open sidebar menu -->
+				<a class="btn btn-primary btn-customized open-menu" href="#" role="button">
+                    <i class="fas fa-align-left"></i> <span>Menu</span>
+                </a>
+		       {% block content %} {% endblock %}
+	        
+	        </div>
+	        <!-- End content -->
+        
+        </div>
+        <!-- End wrapper -->
+
+        <!-- Javascript -->
+		<script src="{% static  'users/assets/js/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static  'users/assets/js/jquery-migrate-3.0.0.min.js' %}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="{% static  'users/assets/js/jquery.backstretch.min.js' %}"></script>
+        <script src="{% static  'users/assets/js/wow.min.js' %}"></script>
+        <script src="{% static  'users/assets/js/jquery.waypoints.min.js' %}"></script>
+        <script src="{% static  'users/assets/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+        <script src="{% static  'users/assets/js/scripts.js' %}"></script>
+		<script src="{% static  'users/assets/js/loader.js' %}"></script>
+        <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script-->
+    </body>
+
+</html>

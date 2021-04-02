@@ -1,0 +1,107 @@
+
+
+    <div class="sidebar">
+      <div class="sidebar-wrapper">
+        
+        <div class="logo">
+          <a 
+             href="#" class="simple-text logo-mini">
+          
+          </a>
+          <a 
+             href="{% url 'account' %}" class="simple-text logo-normal">
+            {{ user.username }}
+          </a>
+        </div>
+
+        <ul class="nav">
+        {% if request.user.is_authenticated %}
+          <li class="{% if 'index' in segment %} active {% endif %} ">
+            <a href="{% url 'account' %}">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          {% if user.is_staff %}
+          <li class="{% if 'icons' in segment %} active {% endif %}">
+            <a href="/super/admin/">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Admin dashboard</p>
+            </a>
+          </li>
+          {% endif %}
+          <li class="{% if 'icons' in segment %} active {% endif %}">
+            <a href="{% url 'deposite' %}">
+              <i class="tim-icons icon-credit-card"></i>
+              <p>Deposite</p>
+            </a>
+          </li>
+          <li class="{% if 'Withdraws' in segment %} active {% endif %}">
+            <a href="{% url 'withdraw' %}">
+              <i class="tim-icons icon-money-coins"></i>
+              <p>Withdraws</p>
+            </a>
+          </li>
+          <li class="{% if 'Transaction' in segment %} active {% endif %}">
+            <a href="{% url 'tranfer_log' %}">
+              <i class="tim-icons icon-coins"></i>
+              <p>Transaction log</p>
+            </a>
+          </li>
+          <li class="{% if 'page-user' in segment %} active {% endif %}">
+            <a href="{% url 'account_refferal' %}">
+              <i class="tim-icons icon-single-02"></i>
+              <p>Refferals</p>
+            </a>
+          </li>
+          <li class="{% if 'packages' in segment %} active {% endif %}">
+            <a href="{% url 'my-packages' %}">
+              <i class="tim-icons icon-gift-2"></i>
+              <p>my package</p>
+            </a>
+          </li>
+  
+          <li class="{% if 'tables' in segment %} active {% endif %}">
+            <a href="{% url 'packages' %}">
+              <i class="tim-icons icon-gift-2"></i>
+              <p>Investment  packages</p>
+            </a>
+          </li>
+          <li class="{% if 'rtl-support' in segment %} active {% endif %}">
+            <a href="{% url 'notification' %}">
+              <i class="tim-icons icon-bell-55"></i>
+              <p>Notifications</p>
+            </a>
+          </li>
+          <li class="{% if 'rtl-support' in segment %} active {% endif %}">
+            <a href="{% url 'account-setup' %}">
+              <i class="tim-icons icon-pencil"></i>
+              <p>Account setup</p>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'logout' %}" >
+              <i class="tim-icons icon-user-run"></i>
+              <p>Logout</p>
+            </a>
+          </li>
+          {% else %}
+          <li class="{% if 'index' in segment %} active {% endif %} ">
+            <a href="/">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Home</p>
+            </a>
+          </li>
+          <li class="active">
+            <a 
+               href="#top">
+              <i class="tim-icons icon-spaceship"></i>
+              <p>Top</p>
+            </a>
+          </li>   
+          {% endif %}
+                    
+        </ul>
+        
+      </div>
+    </div>

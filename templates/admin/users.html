@@ -1,0 +1,108 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"> Users Table</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class=" text-primary">
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    username
+                  </th>
+                  <th class="text-center">
+                    email
+                  </th>
+                  <th class="text-center">
+                    Phoe Number
+                  </th>
+                  <th class="text-center">
+                    wallet id
+                  </th>
+                  <th class="text-center">
+                    Referral
+                  </th>
+                  <th class="text-center">
+                    Balance
+                  </th>
+
+                  <th class="text-center">
+                    Action
+                  </th>
+                </thead>
+                {% for invest in investor %}
+                <tbody>
+                   <tr  align="center">
+                    <td>
+                      {{ invest.full_name }}
+                    </td>
+                    <td>
+                        {{ invest.username }}
+                    </td>
+                    <td class="text-center">
+                        {{ invest.email }}
+                    </td>
+                    <td>
+                        {{ invest.phone }}
+                    </td>
+                    <td>
+                        {{ invest.wallet_id }}
+                      </td>
+                      <td>
+                        {{ invest.refferal }}
+                      </td>
+                      <td>
+                        ${{ invest.balance }}
+                      </td>
+                      <td>
+                        <div>
+                           
+                         <a href="{% url 'users-detail' invest.ref_code %}" class="btn btn-success btn-round" >
+                            <i class="fa fa-eye" ></i>view 
+                         </a>
+                      </td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      </div>
+    </div>
+  </div>
+  <footer class="footer footer-black  footer-white ">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="footer-nav">
+          <ul>
+            <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+            <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+            <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+          </ul>
+        </nav>
+        <div class="credits ml-auto">
+          <span class="copyright">
+            © <script>
+              document.write(new Date().getFullYear())
+            </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+
+{% endblock %}

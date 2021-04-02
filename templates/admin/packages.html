@@ -1,0 +1,75 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"> packages</h4>
+            <a href="{% url 'new_package' %}" class="btn btn-primary btn-sm  btn-circle">Add</a>
+            <div class="d-flex justify-content-center">
+              {% for message in messages %}
+                <h5 class="alert alert-{{ message.tags }}">{{  message }}</h5>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive table-bordered ">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th class="text-center">
+                    Name
+                  </th>
+                  <th class="text-center">
+                    Amount
+                  </th>
+                  <th class="text-center">
+                    Percent
+                  </th>
+                  <th class="text-center">
+                    Action
+                  </th>
+                  <th class="text-center">
+                    Action
+                  </th>
+                  
+                </thead>
+                {% for obj in packages %}
+                <tbody>
+                  <tr>
+                    <td class="text-center">
+                        {{ obj.name }}
+                    </td>
+                    <td class="text-center">
+                        ${{ obj.amount }}
+                      </td>
+                      <td class="text-center">
+                        {{ obj.percent }}%
+                      </td>
+                      <td class="text-center">
+                        <a href="{% url 'package-update' obj.pk %}" class="btn btn-sm btn-primary btn-round">Edit</a>
+                      </td>
+                    </td>
+                    <td class="text-center">
+                      <a href="{% url 'package-delete' obj.pk %}" class="btn btn-sm btn-danger btn-round">Delete</a>
+                    </td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock  %}

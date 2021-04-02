@@ -1,0 +1,154 @@
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container">
+  <di id="top" class="account-box">
+      <div class="span3 well">
+          <div class="d-flex justify-content-center">
+              {% for message in messages %}
+                <h5 class="alert alert-{{ message.tags }}">{{  message }}</h5>
+              {% endfor %}
+            </div>
+
+          <center>
+          <a href="#" ><img src="{{ user.profile_image.url }}" name="aboutme" width="180" height="180" class="img-circle"></a>
+          <h3>{{ user.username }}</h3>
+           {% if user.wallet_id is None %}
+            <small>please got to account setting and settup your wallet</small>
+           {% endif %}
+          </center>
+      </div>
+      <br>
+      <div class="container">
+        <div class="col-lg-12">
+           
+            <div class="row">
+               
+                <div class="col-lg-6 ">
+                    <div class="card card-stats">
+                        <div class="card-body text-center ">
+                            <div class="numbers">
+                              <p class="card-category">Wallet Baance</p>
+                              <h3 class="text-primary">${{ user.balance }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 ">
+                    <div class="card card-stats">
+                        <div class="card-body text-center ">
+                            <div class="numbers">
+                              <p class="card-category">Days Remaining</p>
+                              <h3 id="demo" class="text-primary"> </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-lg-6 ">
+                    <div class="card card-stats">
+                        <div class="card-body text-center ">
+                            <div class="numbers">
+                              <p class="card-category">Status</p>
+                              <h3 class="text-primary">Active</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+    
+    
+                <div class="col-lg-4 ">
+                  <div class="card card-stats">
+                      <div class="card-body text-center ">
+                          <div class="numbers">
+                            {% if investment.is_past_due %}  
+                            <p class="card-category">Total earnings</p>
+                              <h3 class="text-primary"> ${{ investment.total_earnings }}</h3> 
+                             {% endif %}
+                             <p {% if investment.is_past_due %} style="display: none;"     {% endif %} class="card-category">Daily earnings</p>
+                             <h3  {% if investment.is_past_due %} style="display: none;"     {% endif %} id="perc" class="text-primary"></h3> 
+                          </div>
+                      </div>
+                  </div>
+              </div>
+    
+            
+    
+    
+            </div>
+        </div>
+    </div>
+    
+  
+
+
+           
+            
+  </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+
+      
+      const eventS = Date.parse('{{ investment.end_date|date:"M d, Y H:m:s" }}')
+      //console.log(eventS)
+      // Set the date we're counting down to
+      //var countDownDate = new Date("{{ user.to_withdraw_on|date:"F d, Y" }}").getTime();
+      
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+      
+        // Get today's date and time
+        var now = new Date().getTime();
+      
+        // Find the distance between now and the count down date
+        var distance = eventS - now;
+      
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = days + "d " + hours + "h ";
+      
+        // If the count down is over, write some text
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("demo").innerText  = "You can now withdraw";
+        }
+      }, 1000);
+  
+   
+     
+      
+  </script>
+  
+ <script>
+  var counter = " {{ investment.total_perc}} ";
+  var percent = " {{ investment.pack.percent}} "
+  var timeout = new Date();
+  setInterval(function(){
+  if(new Date() >= timeout)
+  {
+      counter + counter; // the action to perform
+      timeout = new Date(timeout.getTime() + 86400000); // update the timeout to the next time you want the action performed
+  }
+  //console.log(counter);
+  document.getElementById("perc").innerHTML =  "$" + counter ;
+  },1000); // every second is probably way more frequent than necessary for this scenario but I think is a decent default in general
+  
+  </script>
+{% endblock javascripts %}

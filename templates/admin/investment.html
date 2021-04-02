@@ -1,0 +1,79 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"> Deposite</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive table-bordered ">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th class="text-center">
+                    Name
+                  </th>
+                  <th class="text-center">
+                    email
+                  </th>
+                  <th class="text-center">
+                    Amount
+                  </th>
+                  <!--th class="text-center">
+                    Wallet Id
+                  </th-->
+                  <th class="text-center">
+                    Date
+                  </th>
+                  <th class="text-center">
+                    Status
+                  </th>
+                  <th class="text-center">
+                    Approve
+                  </th>
+                </thead>
+                {% for obj in investments %}
+                <tbody>
+                  <tr>
+                    <td>
+                      {{ obj.Investor.full_name }}
+                    </td>
+                    <td >
+                        {{ obj.Investor.email }}
+                    </td>
+                    <td>
+                      ${{ obj.amount }}
+                    </td>
+                    <!--td>
+                        {{ obj.Investor.wallet_id }}
+                    </td-->
+                    <td>
+                        {{ obj.date }}
+                      </td>
+                      <td class="{% if obj.status == 'pending'  %} text-warning {% elif obj.status == 'completed' %} text-primary {% else %} text-danger {% endif %} ">
+                        {{ obj.status }}
+                      </td>
+                      <td>
+                        <a href="{% url 'admin-deposite-deteail' obj.pk %}" class="btn btn-sm btn-primary btn-round">view</a>
+                      </td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock  %}

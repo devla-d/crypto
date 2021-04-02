@@ -1,0 +1,102 @@
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title"> Withdraw logs</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  Amount
+                </th>
+                <th>
+                 Date
+                </th>
+                <th class="text-center">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {%  for obj in withdraws %}
+              <tr>
+                <td>
+                  ${{ obj.amount }}
+                </td>
+                <td>
+                  {{ obj.date }}
+                </td>
+                <td class="text-center">
+                  {{ obj.status }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title">Deposite logs</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  Amount
+                </th>
+                <th>
+                  Date
+                </th>
+                <th class="text-center">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {%  for objs in deposites %}
+              <tr>
+                <td>
+                  ${{ objs.amount }}
+                </td>
+                <td>
+                   {{ objs.date }}
+                </td>
+                <td class="text-center">
+                  {{ objs.status }}
+                </td>
+              </tr>
+               {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+   
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,238 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-user">
+          <div class="image">
+            <img style="filter: blur(3px);" src="{% static 'img/damir-bosnjak.jpg' %}" alt="...">
+          </div>
+          <div class="card-body">
+            <div class="author">
+              <a href="#">
+                <img class="avatar border-gray" src="{{ account.profile_image.url }}" alt="...">
+                <h5 class="title">{{ account.username }}</h5>
+              </a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr>
+            <div class="button-container">
+              <div class="row">
+                <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                  {% if account.is_active %}<p class="text-primary">Active</p>{% else %}<p class="text-danger">Deactivated</p> {% endif %} <small>status</small>
+                </div>
+                <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                    <h5>{{ account.refferal }}</h5><small>Refferal</small>
+                  </div>
+                <div class="col-lg-3 mr-auto">
+                  <h5>${{ account.balance }}</h5><small>Balance</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card card-user">
+          <div class="card-header">
+            <h4 id="ifot" class="text-center text-warning"></h4>
+            <h5 class="card-title posts">Withdraw history</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                {% for withdraw in withdraws %}
+                <tbody>
+                  <tr>
+                    <td>${{ withdraw.amount }}</td>
+                    <td>{{ withdraw.date }}</td>
+                    <td>{{ withdraw.status }}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+
+              <h5 class="card-title">Deposite history</h5>
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Amount</th>
+                    <th scope="col">date</th>
+                    <th scope="col">status</th>
+                  </tr>
+                </thead>
+                {% for obj in deposites %}
+                <tbody>
+                  <tr>
+                    <td>${{ obj.amount }}</td>
+                    <td>{{ obj.date }}</td>
+                    <td>{{ obj.status }}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+              <div class="row">
+        
+                <div class="update ml-auto mr-auto">
+                  
+                  {% if account.is_active %}
+                  <button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-round">Disable Profile</button>
+                  {% else %}
+                  <button  type="button"  data-toggle="modal" data-target="#enableP" class="btn btn-primary btn-round">Enable Profile</button>
+                  {% endif %}
+                </div>
+             
+            <!-- Delete profile Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                      <h6 id="deletep" class="text-center text-danger"></h6>
+                      <form  id="userform" action="/admin/users/disable/" method="POST"> 
+                          
+                          <input type="hidden" id="ref0code" name="username" value="{{ account.ref_code }}" >
+                          <h4 class="text-center text-danger">Are you sure yu want to disable {{ account.username }}?</h4>
+                      </div>
+                       <div class="d-flex justify-content-center">
+                          <button type="submit"  class="btn btn-danger btn-round"><span> <i id="userloader" class="fa fa-refresh fa-spin"></i></span></i>Disable Profile</button>
+                       </div>
+                   </form> 
+                </div>
+                </div>
+            </div>
+
+            <!-- Add Funds Modal -->
+            <div class="modal fade" id="Addfunds" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                      <h6 id="addF" class="text-center text-primary"></h6>
+                        <h5 class="text-center">Add funds to {{ account.username }}</h5>
+                      <form id="formAdd" action="/admin/users/add_fund/" method="post"> 
+                          {% csrf_token %}
+                      <div class="form-group">
+                          <label for="amountAdd">Amount</label>
+                          <input id="amountAdd" name="amount" type="number" class="form-control" required>
+                          <input id="re-0099" type="hidden" name="username" value="{{ account.ref_code }}">
+                          
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button  type="submit" class="btn btn-primary btn-round"> <i style="display: none;" id="userloader" class="fa fa-refresh fa-spin"></i> Add fund</button>
+                    </div>
+                </form> 
+                </div>
+                </div>
+            </div>
+
+            <!-- Deduct funds Modal -->
+            <div class="modal fade" id="DeductFunds" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center">Deduct funds from {{ account.username }}</h5>
+                      <form id="deductForm" action="/admin/users/deduct/" method="post"> 
+                          {% csrf_token %}
+                          <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input id="amountDeduct" name="amount" type="number" class="form-control">
+                            <input id="userr" type="hidden" name="username" value="{{ account.ref_code }}" >
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                     <input type="submit" class="btn btn-danger btn-round" value="Deduct Funds" >
+                    </div>
+                </form> 
+                </div>
+                </div>
+            </div>
+
+            <!-- enable profile Modal -->
+            <div class="modal fade" id="enableP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                      <h6 id="enablep" class="text-center text-primary"></h6>
+                      <form id="enableForm" action="" method="post"> 
+                          {% csrf_token %}
+                          <input type="hidden" id="ref000code" name="username" value="{{ account.ref_code }}" >
+                    <h4 class="text-center text-danger">Enable {{ account.username }}?</h4>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit"  class="btn btn-danger btn-round">Enable Profile</button>
+                    </div>
+                </form> 
+                </div>
+                </div>
+            </div>
+                <div class="update ml-auto mr-auto">
+                    <button type="submit" data-toggle="modal" data-target="#Addfunds" class="btn btn-primary btn-round">Add funds </button>
+                  </div>
+
+                  <div class="update ml-auto mr-auto">
+                    <button type="submit" data-toggle="modal" data-target="#DeductFunds" class="btn btn-primary btn-round">Deduct funds </button>
+                  </div>
+                  <!--div class="update ml-auto mr-auto">
+                    <button type="submit" data-toggle="modal" data-target="#DisableP" class="btn btn-primary btn-round">Disable </button>
+                  </div-->
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer footer-black  footer-white ">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="footer-nav">
+          <ul>
+            <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+            <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+            <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+          </ul>
+        </nav>
+        <div class="credits ml-auto">
+          <span class="copyright">
+            © <script>
+              document.write(new Date().getFullYear())
+            </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+
+{% endblock %}

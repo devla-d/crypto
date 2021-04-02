@@ -1,0 +1,80 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"> Withdraws</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive table-bordered ">
+              <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead class=" text-primary">
+                  <th class="text-center">
+                    Name
+                  </th>
+                  <th class="text-center">
+                    email
+                  </th>
+                  <th class="text-center">
+                    Amount
+                  </th>
+                  <th class="text-center">
+                    Wallet Id
+                  </th>
+                  <th class="text-center">
+                    Date
+                  </th>
+                  <th class="text-center">
+                    Status
+                  </th>
+                  <th class="text-center">
+                    Accept
+                  </th>
+                  <!--th class="text-center">
+                    Decline
+                  </th -->
+                </thead>
+                {% for obj in withdraw %}
+                <tbody>
+                  <tr>
+                    <td>
+                      {{ obj.user.full_name }}
+                    </td>
+                    <td >
+                        {{ obj.user.email }}
+                    </td>
+                    <td>
+                      ${{ obj.amount }}
+                    </td>
+                    <td>
+                        {{ obj.user.wallet_id }}
+                    </td>
+                    <td>
+                        {{ obj.date }}
+                      </td>
+                      <td  class="{% if obj.status == 'pending'  %} text-warning {% elif obj.status == 'sucessfull' %} text-primary {% else %} text-danger {% endif %} ">
+                        {{ obj.status }}
+                      </td>
+                      <td>
+                        <a href="{% url 'admin-withdraw-detail' obj.pk %}" class="btn btn-primary btn-round">view</a>
+                      </td>
+                     
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+{% endblock  %}

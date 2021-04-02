@@ -1,0 +1,190 @@
+
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Deposite{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+{% if investment is None %}
+    <div class="col-lg-12">
+        <div >
+            <div class="alert alert-info">
+                <h3 class="text-center">You dont have any package </h3>
+            </div>
+        </div>
+    </div>
+{% else %}
+<!--div class="container-fliud">
+    <div class="tradingview-widget-container" style="width: 100%; height: 84px;">
+        <iframe scrolling="no" allowtransparency="true" frameborder="0" src="https://s.tradingview.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22title%22%3A%22S%26P%20500%22%2C%22proName%22%3A%22OANDA%3ASPX500USD%22%7D%2C%7B%22title%22%3A%22Nasdaq%20100%22%2C%22proName%22%3A%22OANDA%3ANAS100USD%22%7D%2C%7B%22title%22%3A%22EUR%2FUSD%22%2C%22proName%22%3A%22FX_IDC%3AEURUSD%22%7D%2C%7B%22title%22%3A%22BTC%2FUSD%22%2C%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%7D%2C%7B%22title%22%3A%22ETH%2FUSD%22%2C%22proName%22%3A%22BITSTAMP%3AETHUSD%22%7D%5D%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Afalse%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A46%2C%22utm_source%22%3A%22demo-investment-pro.scriptsdemo.website%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22ticker-tape%22%7D" style="box-sizing: border-box; height: 74px; width: 100%;"></iframe>
+        
+     </div>
+</div-->
+<div class="container">
+    <h3 class="text-center text-primary">Your active packages</h3>
+    <div class="col-lg-12">
+        <div class="row">
+           
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">{{   investment.pack.name }}</p>
+                          <h3 class="text-primary">${{ investment.pack.amount }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">Start Date</p>
+                          <h4 class="text-primary">{{ investment.start_date }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">End Date</p>
+                          <h4 class="text-primary">{{ investment.end_date }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">Status</p>
+                          <h3 class="text-primary">{{ investment.status }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">Days Left</p>
+                          <h3 id="demo" class="text-primary"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 ">
+                <div class="card card-stats">
+                    <div class="card-body text-center ">
+                        <div class="numbers">
+                          <p class="card-category">Daily earnings</p>
+                            {% if investment.is_past_due %}  
+                            <h3 class="text-primary"> ${{ investment.total_earnings }}</h3> 
+                            {% else %}
+                            <h3 id="perc" class="text-primary"></h3> 
+                            {% endif %}
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+<div class="container" >
+    <div class="alert alert-info">
+        <h3 class="text-center">
+            {% if investment.is_past_due %}
+            You can now request for withdraw
+           
+            {% else %}
+            You will be paid <br> after your package endate is due
+            {% endif %}
+        </h3>
+    </div>
+</div>
+
+
+{% endif %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+      
+    const eventdate = Date.parse('{{ investment.end_date|date:"M d, Y H:m:s" }}')
+    //console.log(eventS)
+    // Set the date we're counting down to
+    //var countDownDate = new Date("{{ user.to_withdraw_on|date:"F d, Y" }}").getTime();
+    
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+    
+      // Get today's date and time
+      var now = new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      var distance = eventdate - now;
+     // console.log(distance)
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+      // Output the result in an element with id="demo"
+      document.getElementById("demo").innerHTML = days + "d " + hours + "h ";
+    
+      // If the count down is over, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerText  = "You can now withdraw";
+      }
+    }, 1000);
+      
+
+</script>
+
+
+ <script>
+    var counter = " {{ investment.total_perc}} ";
+    var percent = " {{ investment.pack.percent}} "
+    var timeout = new Date();
+    setInterval(function(){
+    if(new Date() >= timeout)
+    {
+        counter + counter; // the action to perform
+        timeout = new Date(timeout.getTime() + 86400000); // update the timeout to the next time you want the action performed
+    }
+    //console.log(counter);
+    document.getElementById("perc").innerHTML = "$" + counter;
+    },1000); // every second is probably way more frequent than necessary for this scenario but I think is a decent default in general
+    
+    </script>
+{% endblock javascripts %}
+
+
+
+
+
+{% endblock content %}

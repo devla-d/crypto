@@ -1,0 +1,5 @@
+<div class="d-flex justify-content-center">
+    {% for message in messages %}
+      <h5 class="alert alert-{{ message.tags }}">{{  message }}</h5>
+    {% endfor %}
+  </div>

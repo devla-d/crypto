@@ -1,0 +1,209 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="card card-upgrade">
+          <div class="card-header text-center">
+            <h4 class="card-title"> Withdraw</h3>
+              <p id="withinfo" class="card-category {% if withdraw.status == 'pending'  %} text-warning {% elif withdraw.status == 'sucessfull' %} text-primary {% else %} text-danger {% endif %} ""></p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive table-upgrade">
+              <table class="table">
+                <thead>
+                  <th></th>
+                  <th class="text-center">Details</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Name</td>
+                    <td class="text-center">{{ withdraw.user.username }}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td class="text-center">{{ withdraw.user.email }}</td>
+                  </tr>
+                  <tr>
+                    <td>Wallet Id</td>
+                    <td class="text-center">{{ withdraw.user.wallet_id }}</td>
+                  </tr>
+                  <tr>
+                    <td>Amount</td>
+                    <td class="text-center">${{ withdraw.amount }}</td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td class="text-center">{{ withdraw.date }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td class="text-center {% if withdraw.status == 'pending'  %} text-warning {% elif withdraw.status == 'sucessfull' %} text-primary {% else %} text-danger {% endif %} ">{{ withdraw.status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+        
+                <div class="update ml-auto mr-auto">
+                  
+                  {% if withdraw.status == "pending" %}
+                  <form id="withdrawComfim" action="/admin/withdraw/pay/" method="post">
+                      {% csrf_token %}
+                      <input id="withuser" type="hidden" name="users" value="{{ withdraw.user.ref_code }}">
+                      <input id="withdate"  type="hidden" name="date" value="{{ withdraw.id }}">
+                      <input  type="submit" href="#"  class="btn btn-primary btn-round "  value="Approve"  >
+                  </form>
+                  {% else %}
+                  <button  type="button"   class="btn btn-primary btn-round disable">Approve</button>
+                  {% endif %}
+                </div>
+                <!--div class="update ml-auto mr-auto">
+                    
+                  {% if withdraw.status == "pending" %}
+                  <form id="withdrawDecline" action="/admin/withdraw/decline/" method="post">
+                    {% csrf_token %}
+                    <input id="withdeclineuser" type="hidden" name="users" value="{{ withdraw.user.ref_code }}">
+                    <input id="withddeclineate"  type="hidden" name="pk" value="{{ withdraw.id }}">
+                    <input  type="submit" href="#"  class="btn btn-danger btn-round "  value="Decline"  >
+                  </form>
+                  {% else %}
+                  <button  type="button"   class="btn btn-danger btn-round disable">Decline</button>
+                  {% endif %}
+                </div-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer footer-black  footer-white ">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="footer-nav">
+          <ul>
+            <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+            <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+            <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+          </ul>
+        </nav>
+        <div class="credits ml-auto">
+          <span class="copyright">
+            © <script>
+              document.write(new Date().getFullYear())
+            </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  
+
+    var withdrawComfim = document.getElementById('withdrawComfim')
+    withdrawComfim.addEventListener('submit', function(e){
+     e.preventDefault()
+    
+    payWithdraw()
+     // window.location.reload();
+    
+    })
+    
+    
+    
+    function payWithdraw(){
+      
+        $.ajax({
+            type: "POST",
+            url: "/super/admin/withdraw/pay/",
+            data: {
+                //amountbalance: withamount,
+                ref_code_with:$('#withuser').val(),
+                date:$('#withdate').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data) {
+                document.getElementById("withinfo").innerText = data.user
+            }   
+         }); 
+         return false;   
+    }
+    
+    
+
+
+
+    
+    var withdrawDecline = document.getElementById('withdrawDecline')
+    withdrawDecline.addEventListener('submit', function(e){
+     e.preventDefault()
+    
+     DeclinepayWithdraw()
+     // window.location.reload();
+    
+    })
+    
+    
+    
+    function DeclinepayWithdraw(){
+      
+        $.ajax({
+            type: "POST",
+            url: "/super/admin/withdraw/decline/",
+            data: {
+                //amountbalance: withamount,
+                ref_code_dd:$('#withdeclineuser').val(),
+                pk:$('#withddeclineate').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data) {
+                document.getElementById("withinfo").innerText = data.user
+            }   
+         }); 
+         return false;   
+    }
+    
+    </script>
+    
+    
+    
+    
+    
+    {% endblock  %}

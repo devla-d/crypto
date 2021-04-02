@@ -1,0 +1,86 @@
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title"> Refferal ({{ user.refferal }})</h4>
+        <div class="form-group">
+          <h5 class="text-center" for="btc">Your refferal link</h5>
+          <input id="myInput" type="text" id="btc" class="form-control" value="http://127.0.0.1:8000/ref/{{ user.ref_code }}  " readonly>
+      </div>
+      <div class="col-md-3">
+        <button onclick="myFunction()" onmouseout="outFunc()" style="background-color: #ff3300;" type="submit" name="copy" class="btn btn-fill">
+            <span class="tooltiptext" id="myTooltip">copy address</span></button>
+      </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                 Name
+                </th>
+               
+                <th class="text-center">
+                  Username
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {%  for obj in my_recs %}
+              <tr>
+                <td>
+                  {{ obj.user.full_name }}
+                </td>
+               
+                <td class="text-center">
+                  {{ obj.user.username }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  $(document).ready(function() {
+    // Javascript method's body can be found in assets/js/demos.js
+    demo.initDashboardPageCharts();
+
+  });
+  function myFunction() {
+var copyText = document.getElementById("myInput");
+copyText.select();
+copyText.setSelectionRange(0, 99999);
+document.execCommand("copy");
+
+var tooltip = document.getElementById("myTooltip");
+tooltip.innerHTML = "Copied "
+}
+
+function outFunc() {
+var tooltip = document.getElementById("myTooltip");
+tooltip.innerHTML = "Copy link";
+}
+</script>
+
+{% endblock javascripts %}

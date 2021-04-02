@@ -1,0 +1,213 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+<div class="content">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="card card-upgrade">
+          <div class="card-header text-center">
+            <h4 class="card-title"> Deposite</h3>
+              <p id="withinfo" class="card-category {% if withdraw.status == 'pending'  %} text-warning {% elif withdraw.status == 'sucessfull' %} text-primary {% else %} text-danger {% endif %} ""></p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive table-upgrade">
+              <table class="table">
+                <thead>
+                  <th></th>
+                  <th class="text-center">Details</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Name</td>
+                    <td class="text-center">{{ obj.Investor.username }}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td class="text-center">{{ obj.Investor.email }}</td>
+                  </tr>
+                  <tr>
+                    <td>Wallet Id</td>
+                    <td class="text-center">{{ obj.Investor.wallet_id }}</td>
+                  </tr>
+                  <tr>
+                    <td>Amount</td>
+                    <td class="text-center">${{ obj.amount }}</td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td class="text-center">{{ obj.date }}</td>
+                  </tr>
+                  <tr>
+                    <td>Trasaction Id</td>
+                    <td class="text-center">{{ obj.trans_id }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td class="text-center {% if obj.status == 'pending'  %} text-warning {% elif obj.status == 'sucessfull' %} text-primary {% else %} text-danger {% endif %} ">{{ obj.status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+        
+                <div class="update ml-auto mr-auto">
+                  
+                  {% if obj.status == "pending" %}
+                  <form id="DepoComfim" action="/admin/deposite/accept/" method="post">
+                      {% csrf_token %}
+                      <input id="depuser" type="hidden" name="users" value="{{ obj.Investor.ref_code }}">
+                      <input id="depoId"  type="hidden" name="date" value="{{ obj.id }}">
+                      <input  type="submit" href="#"  class="btn btn-primary btn-round "  value="Approve"  >
+                  </form>
+                  {% else %}
+                  <button  type="button"   class="btn btn-primary btn-round disable">Approve</button>
+                  {% endif %}
+                </div>
+                <div class="update ml-auto mr-auto">
+                    
+                  {% if obj.status == "pending" %}
+                  <form id="depoDeclineForm" action="/admin/deposite/decline/" method="post">
+                    {% csrf_token %}
+                    <input id="depodecline" type="hidden" name="users" value="{{ obj.Investor.ref_code }}">
+                    <input id="depodeclinepk"  type="hidden" name="pk" value="{{ obj.id }}">
+                    <input  type="submit" href="#"  class="btn btn-danger btn-round "  value="Decline"  >
+                  </form>
+                  {% else %}
+                  <button  type="button"   class="btn btn-danger btn-round disable">Decline</button>
+                  {% endif %}
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer footer-black  footer-white ">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="footer-nav">
+          <ul>
+            <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+            <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+            <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+          </ul>
+        </nav>
+        <div class="credits ml-auto">
+          <span class="copyright">
+            © <script>
+              document.write(new Date().getFullYear())
+            </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  
+
+    var DepoComfim = document.getElementById('DepoComfim')
+    DepoComfim.addEventListener('submit', function(e){
+     e.preventDefault()
+    
+    acceptDepo()
+     // window.location.reload();
+    
+    })
+    
+    
+    
+    function acceptDepo(){
+      
+        $.ajax({
+            type: "POST",
+            url: "/super/admin/deposite/accept/",
+            data: {
+                //amountbalance: withamount,
+                ref_code_depo:$('#depuser').val(),
+                pkdepo:$('#depoId').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data) {
+                document.getElementById("withinfo").innerText = data.user
+            }   
+         }); 
+         return false;   
+    }
+    
+    
+
+
+
+    
+    var depoDeclineForm = document.getElementById('depoDeclineForm')
+    depoDeclineForm.addEventListener('submit', function(e){
+     e.preventDefault()
+    
+     Declinedepo()
+     // window.location.reload();
+    
+    })
+    
+    
+    
+    function Declinedepo(){
+      
+        $.ajax({
+            type: "POST",
+            url: "/super/admin/deposite/decline/",
+            data: {
+                //amountbalance: withamount,
+                ref_code_depo:$('#depodecline').val(),
+                pkdepo:$('#depodeclinepk').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data) {
+                document.getElementById("withinfo").innerText = data.user
+            }   
+         }); 
+         return false;   
+    }
+    
+    </script>
+    
+    
+    
+    
+    
+    {% endblock  %}

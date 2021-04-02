@@ -1,0 +1,83 @@
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Deposite{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/gh/coinponent/coinponent@1.2.6/dist/coinponent.js"></script>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title text-center">Deposite</h5>
+        
+                    <h6 class="card-category">
+                        {% for message in messages %}
+                                  <h5 class="alert alert-{{ message.tags }}">{{  message }}</h5>
+                        {% endfor %}
+                    </h6>
+                  </div>
+                  <div class="form-group">
+                      <h5 class="text-center" for="btc">Make payment to the below Bitcoin wallet then input the transaction id in the id box</h5>
+                      <input id="myInput" type="text" id="btc" class="form-control" value="gdgy7892yghjkajgagagg" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <button onclick="myFunction()" onmouseout="outFunc()" style="background-color: #ff3300;" type="submit" name="copy" class="btn btn-fill">
+                        <span class="tooltiptext" id="myTooltip">copy address</span></button>
+                  </div>
+                
+                <form method="post" action="">
+                
+                  {% csrf_token %} 
+                   
+                  <div class="card-body">
+                  
+                     {{ form|crispy }} 
+                     <div class="col-md-12 text-center ">
+                        <button style="background-color: #ff3300;" type="submit" class=" btn btn-block mybtn  tx-tfm">deposite</button>
+                     </div>
+                  </div>
+                
+                </form>
+        
+              </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      demo.initDashboardPageCharts();
+
+    });
+    function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied "
+}
+
+function outFunc() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy address";
+}
+  </script>
+
+{% endblock javascripts %}

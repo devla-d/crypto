@@ -1,0 +1,68 @@
+{% extends "userstemplate/layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Deposite{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="col-lg-8">
+        <h6 class="card-category">
+            {% for message in messages %}
+                      <h5 class="alert alert-{{ message.tags }}">{{  message }}</h5>
+            {% endfor %}
+        </h6>
+    </div>
+</div>
+<div class="container">
+    <div class="col-lg-12">
+        <div class="row">   
+        {% for package in packages %}
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-body ">
+                    <div class="row">
+                      <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                          <i class="nc-icon nc-globe text-warning"></i>
+                        </div>
+                      </div>
+                      <div class="col-7 col-md-8">
+                        <div class="numbers">
+                          <p class="card-category">{{   package.name }}</p>
+                          <p class="card-title">${{ package.amount }}<p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer ">
+                    <hr>
+                    <div class="stats text-center">
+                      <i class="fa fa-refresh"></i>
+                      <form action="{% url 'packages' %}" method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="amount" value="{{ package.amount }}">
+                          <input type="hidden" name="name" value="{{ package.name }}">
+                        <button style="background-color: #ff3300;" type="submit" class=" btn btn-block mybtn  tx-tfm">Purcase</button>
+                      </form>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+       {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}
+
+
+
